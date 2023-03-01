@@ -1,6 +1,6 @@
 import { Command } from '@colyseus/command'
 import { Client } from 'colyseus'
-import { IOfficeState } from '../../../types/IOfficeState'
+import { IOfficeState } from '../../types/IOfficeState'
 
 type Payload = {
   client: Client
@@ -23,8 +23,8 @@ export class ComputerRemoveUserCommand extends Command<IOfficeState, Payload> {
     const { client, computerId } = data
     const computer = this.state.computers.get(computerId)
 
-    if (computer.connectedUser.has(client.sessionId)) {
-      computer.connectedUser.delete(client.sessionId)
+    if (computer!.connectedUser.has(client.sessionId)) {
+      computer!.connectedUser.delete(client.sessionId)
     }
   }
 }

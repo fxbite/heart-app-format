@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Network from '../services/Network'
-import { BackgroundMode } from '../../../types/BackgroundMode'
+import { BackgroundMode } from '../types/BackgroundMode'
 import store from '../stores'
 import { setRoomJoined } from '../stores/RoomStore'
 
@@ -25,7 +25,7 @@ export default class LoadSource extends Phaser.Scene {
     )
     this.load.image('backdrop_night', 'assets/background/backdrop_night.png')
     this.load.image('sun_moon', 'assets/background/sun_moon.png')
-    
+
     this.load.audio('music1', 'assets/background/bgm.mp3')
 
     this.load.image('snow-drop', 'assets/background/snow.png')

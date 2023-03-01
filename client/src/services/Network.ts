@@ -1,8 +1,8 @@
 import { Client, Room } from 'colyseus.js'
-import { IComputer, IOfficeState, IPlayer } from '../../../types/IOfficeState'
-import { Message } from '../../../types/Messages'
-import { IRoomData, RoomType } from '../../../types/Rooms'
-import { ItemType } from '../../../types/Items'
+import { IComputer, IOfficeState, IPlayer } from '../types/IOfficeState'
+import { Message } from '../types/Messages'
+import { IRoomData, RoomType } from '../types/Rooms'
+import { ItemType } from '../types/Items'
 import WebRTC from '../web/WebRTC'
 import { phaserEvents, Event } from '../events/EventCenter'
 import store from '../stores'
@@ -31,9 +31,7 @@ export default class Network {
   constructor() {
     const protocol = window.location.protocol.replace('http', 'ws')
     const endpoint =
-      process.env.NODE_ENV === 'production'
-        ? ``
-        : `${protocol}//${window.location.hostname}:2567`
+      process.env.NODE_ENV === 'production' ? `` : `${protocol}//${window.location.hostname}:2567`
     this.client = new Client(endpoint)
     this.joinLobbyRoom().then(() => {
       store.dispatch(setLobbyJoined(true))

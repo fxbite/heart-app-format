@@ -1,6 +1,6 @@
 import { Command } from '@colyseus/command'
 import { Client } from 'colyseus'
-import { IOfficeState } from '../../../types/IOfficeState'
+import { IOfficeState } from '../../types/IOfficeState'
 import { ChatMessage } from '../schema/OfficeState'
 
 type Payload = {
@@ -23,7 +23,7 @@ export default class ChatMessageUpdateCommand extends Command<IOfficeState, Payl
     if (chatMessages.length >= 100) chatMessages.shift()
 
     const newMessage = new ChatMessage()
-    newMessage.author = player.name
+    newMessage.author = player!.name
     newMessage.content = content
     chatMessages.push(newMessage)
   }

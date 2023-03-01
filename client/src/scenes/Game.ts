@@ -12,10 +12,10 @@ import MyPlayer from '../characters/MyPlayer'
 import OtherPlayer from '../characters/OtherPlayer'
 import PlayerSelector from '../characters/PlayerSelector'
 import Network from '../services/Network'
-import { IPlayer } from '../../../types/IOfficeState'
-import { PlayerBehavior } from '../../../types/PlayerBehavior'
-import { ItemType } from '../../../types/Items'
-import { NavKeys, Keyboard } from '../../../types/Keyboard'
+import { IPlayer } from '../types/IOfficeState'
+import { PlayerBehavior } from '../types/PlayerBehavior'
+import { ItemType } from '../types/Items'
+import { NavKeys, Keyboard } from '../types/Keyboard'
 
 import store from '../stores'
 import { setFocused, setShowChat } from '../stores/ChatStore'
@@ -33,7 +33,6 @@ export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
   private mouse!: Phaser.Input.Pointer
 
-  
   myPlayer!: MyPlayer
   private playerSelector!: Phaser.GameObjects.Zone
   private otherPlayers!: Phaser.Physics.Arcade.Group
@@ -41,7 +40,6 @@ export default class Game extends Phaser.Scene {
   computerMap = new Map<string, Computer>()
 
   private charMale = 'male'
-
 
   constructor() {
     super('game')
@@ -82,7 +80,6 @@ export default class Game extends Phaser.Scene {
       throw new Error('server instance missing')
     } else {
       this.network = data.network
-      
     }
 
     //this.game.sound.play('music1')
@@ -94,17 +91,17 @@ export default class Game extends Phaser.Scene {
     const tilekey = this.map.addTilesetImage('tileset', 'tiles')
 
     const groundLayer = this.map.createLayer('Ground', tilekey)
-    groundLayer.setScale(2);
+    groundLayer.setScale(2)
     groundLayer.setCollisionByProperty({ collides: true })
 
     const Underground = this.map.createLayer('Underground', tilekey)
-    Underground.setScale(2);
+    Underground.setScale(2)
 
     const floor = this.map.createLayer('Upfloor', tilekey)
-    floor.setScale(2);
+    floor.setScale(2)
 
     const Gardecor = this.map.createLayer('Gardecor', tilekey)
-    Gardecor.setScale(2);
+    Gardecor.setScale(2)
 
     this.myPlayer = this.add.myPlayer(545, 495, this.charMale, this.network.mySessionId)
     this.playerSelector = new PlayerSelector(this, 0, 0, 16, 16)
@@ -134,7 +131,7 @@ export default class Game extends Phaser.Scene {
     this.addGroupFromTiled('Objects', 'tiles', 'tileset', false)
     this.addGroupFromTiled('ObjectsOnCollide', 'tiles', 'tileset', true)
     this.addGroupFromTiled('GenericObjects', 'tiles', 'tileset', false)
- 
+
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
 
     this.cameras.main.zoom = 1.4
@@ -168,7 +165,6 @@ export default class Game extends Phaser.Scene {
     this.network.onItemUserRemoved(this.handleItemUserRemoved, this)
     this.network.onChatMessageAdded(this.handleChatMessageAdded, this)
 
-    
     // add snow drop to the gamescene
     const snowDrop = this.add.particles('snow-drop')
     snowDrop.createEmitter({
@@ -178,7 +174,7 @@ export default class Game extends Phaser.Scene {
       emitZone: {
         source: new Phaser.Geom.Rectangle(-720 * 3, -250, 1280 * 8, 100),
         type: 'random',
-        quantity: 70
+        quantity: 70,
       },
       speedY: { min: 50, max: 70 },
       speedX: { min: -20, max: 20 },
@@ -216,8 +212,8 @@ export default class Game extends Phaser.Scene {
     key: string,
     tilesetName: string
   ) {
-    const actualX = (object.x! + object.width! * 0.5)*2
-    const actualY = (object.y! - object.height! * 0.5)*2
+    const actualX = (object.x! + object.width! * 0.5) * 2
+    const actualY = (object.y! - object.height! * 0.5) * 2
     const obj = group
       .get(actualX, actualY, key, object.gid! - this.map.getTileset(tilesetName).firstgid)
       .setDepth(actualY)
@@ -234,8 +230,8 @@ export default class Game extends Phaser.Scene {
     const group = this.physics.add.staticGroup()
     const objectLayer = this.map.getObjectLayer(objectLayerName)
     objectLayer.objects.forEach((object) => {
-      const actualX = (object.x! + object.width! * 0.5)*2
-      const actualY = (object.y! - object.height! * 0.5)*2
+      const actualX = (object.x! + object.width! * 0.5) * 2
+      const actualY = (object.y! - object.height! * 0.5) * 2
       group
         .get(actualX, actualY, key, object.gid! - this.map.getTileset(tilesetName).firstgid)
         .setDepth(actualY)
@@ -244,11 +240,16 @@ export default class Game extends Phaser.Scene {
     if (this.myPlayer && collidable)
       this.physics.add.collider([this.myPlayer, this.myPlayer.playerContainer], group)
   }
-  
 
   // function to add new player to the otherPlayer group
   private handlePlayerJoined(newPlayer: IPlayer, id: string) {
-    const otherPlayer = this.add.otherPlayer(newPlayer.x, newPlayer.y, this.charMale, id, newPlayer.name)
+    const otherPlayer = this.add.otherPlayer(
+      newPlayer.x,
+      newPlayer.y,
+      this.charMale,
+      id,
+      newPlayer.name
+    )
     this.otherPlayers.add(otherPlayer)
     this.otherPlayerMap.set(id, otherPlayer)
   }
@@ -292,7 +293,7 @@ export default class Game extends Phaser.Scene {
     if (itemType === ItemType.COMPUTER) {
       const computer = this.computerMap.get(itemId)
       computer?.removeCurrentUser(playerId)
-    } 
+    }
   }
 
   private handleChatMessageAdded(playerId: string, content: string) {
@@ -301,11 +302,20 @@ export default class Game extends Phaser.Scene {
   }
 
   update(t: number, dt: number) {
-
     if (this.myPlayer && this.network) {
       this.playerSelector.update(this.myPlayer, this.cursors, this.mouse)
-      this.myPlayer.update(this.playerSelector, this.cursors, this.keyE,
-        this.keyF, this.keyA, this.keyD, this.keyW, this.keyS, this.mouse, this.network)
+      this.myPlayer.update(
+        this.playerSelector,
+        this.cursors,
+        this.keyE,
+        this.keyF,
+        this.keyA,
+        this.keyD,
+        this.keyW,
+        this.keyS,
+        this.mouse,
+        this.network
+      )
     }
   }
 }

@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { BackgroundMode } from '../../../types/BackgroundMode'
+import { BackgroundMode } from '../types/BackgroundMode'
 
 export default class Background extends Phaser.Scene {
   private cloud!: Phaser.Physics.Arcade.Group
@@ -48,7 +48,6 @@ export default class Background extends Phaser.Scene {
         .setScale(3)
         .setVelocity(velocity, 0)
     }
-
   }
 
   update(t: number, dt: number) {

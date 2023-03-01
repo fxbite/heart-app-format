@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import FacebookIcon from '@mui/icons-material/Facebook'
-import { BackgroundMode } from '../../../types/BackgroundMode'
+import { BackgroundMode } from '../types/BackgroundMode'
 import { toggleBackgroundMode } from '../stores/UserStore'
 import { useAppSelector, useAppDispatch } from '../hooks'
 import { getAvatarString, getColorByString } from '../util'
@@ -194,7 +194,11 @@ export default function HelperButtonGroup() {
           </>
         )}
         <Tooltip title="Follow Us on Facebook">
-          <StyledFab size="small" href="https://www.facebook.com/HEART-Vietnam-104181528908773" target="_blank">
+          <StyledFab
+            size="small"
+            href="https://www.facebook.com/HEART-Vietnam-104181528908773"
+            target="_blank"
+          >
             <FacebookIcon />
           </StyledFab>
         </Tooltip>

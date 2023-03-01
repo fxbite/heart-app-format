@@ -56,7 +56,7 @@ const BackButtonWrapper = styled.div`
 
 const Title = styled.h1`
   font-size: 24px;
-  color: #339DD8;
+  color: #339dd8;
   text-align: center;
 `
 
@@ -174,7 +174,6 @@ export default function RoomSelectionDialog() {
                 </Button>
                 <Button
                   variant="outlined"
-                  
                   onClick={() => (lobbyJoined ? setShowCustomRoom(true) : setShowSnackbar(true))}
                 >
                   Create/find server

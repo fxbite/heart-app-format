@@ -108,7 +108,6 @@ const Left = styled.div`
     height: 136px;
     object-fit: contain;
   }
-  
 `
 
 const Right = styled.div`

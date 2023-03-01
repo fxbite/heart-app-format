@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RoomAvailable } from 'colyseus.js'
-import { RoomType } from '../../../types/Rooms'
+import { RoomType } from '../types/Rooms'
 
 interface RoomInterface extends RoomAvailable {
   name?: string
