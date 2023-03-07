@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Production
-FROM nginx:1.23.3-alpine as production 
+FROM nginx:1.23.3-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 # Add your nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
