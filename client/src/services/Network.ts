@@ -29,9 +29,7 @@ export default class Network {
   mySessionId!: string
 
   constructor() {
-    const protocol = window.location.protocol.replace('http', 'ws')
-    const endpoint =
-      process.env.NODE_ENV === 'production' ? `` : `${protocol}//${window.location.hostname}:2567`
+    const endpoint = process.env.REACT_APP_API_URL!
     this.client = new Client(endpoint)
     this.joinLobbyRoom().then(() => {
       store.dispatch(setLobbyJoined(true))

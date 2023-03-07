@@ -1,11 +1,16 @@
-FROM node:16-alpine 
+# Builder
+FROM node:16-alpine as builder
 WORKDIR /app
-
-# Copy build folder, package.json
 COPY package.json .
 RUN npm i --omit=dev 
-RUN npm i -g serve
 COPY . .
-ENV NODE_ENV production
-EXPOSE 4000
-CMD serve -s build -l 4000
+RUN npm run build
+
+# Production
+FROM nginx:1.23.3-alpine as production 
+COPY --from=builder /app/build /usr/share/nginx/html
+# Add your nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+

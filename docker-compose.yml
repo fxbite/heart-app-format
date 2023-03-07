@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  server:
+    image: server-app
+    container_name: server-heart
+    restart: always
+    ports:
+      - "2567:2567"
+    networks:
+      - heart-app
+    build:
+      dockerfile: Dockerfile
+      context: "./server"
+  client:
+    image: client-app
+    container_name: client-heart
+    stdin_open: true
+    ports:
+      - "3000:80"
+    networks:
+      - heart-app
+    build:
+      dockerfile: Dockerfile
+      context: "./client"
+    depends_on:
+    - server
+networks:
+  heart-app:
+    driver: bridge
+    
