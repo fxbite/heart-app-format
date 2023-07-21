@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@colyseus/schema": "^1.0.28",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
@@ -63,7 +64,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
-  }
+  "devDependencies": {}
 }
