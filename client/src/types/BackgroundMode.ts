@@ -1,4 +1,4 @@
 export enum BackgroundMode {
   DAY,
-  NIGHT,
+  NIGHT
 }

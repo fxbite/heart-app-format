@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import logo from '../assets/logo.png'
-import styled from 'styled-components'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
-import LinearProgress from '@mui/material/LinearProgress'
-import Alert from '@mui/material/Alert'
-import Snackbar from '@mui/material/Snackbar'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import React, { useState } from 'react';
+import logo from '../assets/logo.png';
+import styled from 'styled-components';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import { CustomRoomTable } from './CustomRoomTable'
-import { CreateRoomForm } from './CreateRoomForm'
-import { useAppSelector } from '../hooks'
+import { CustomRoomTable } from './CustomRoomTable';
+import { CreateRoomForm } from './CreateRoomForm';
+import { useAppSelector } from '../hooks';
 
-import phaserGame from '../PhaserGame'
-import LoadSource from '../scenes/LoadSource'
+import phaserGame from '../PhaserGame';
+import LoadSource from '../scenes/LoadSource';
 
 const Backdrop = styled.div`
   position: absolute;
@@ -26,14 +26,14 @@ const Backdrop = styled.div`
   flex-direction: column;
   gap: 60px;
   align-items: center;
-`
+`;
 
 const Wrapper = styled.div`
   background: #000000a7;
   border-radius: 12px;
   padding: 36px 60px;
   box-shadow: 0px 0px 5px #0000006f;
-`
+`;
 
 const CustomRoomWrapper = styled.div`
   position: relative;
@@ -46,19 +46,19 @@ const CustomRoomWrapper = styled.div`
   .tip {
     font-size: 18px;
   }
-`
+`;
 
 const BackButtonWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-`
+`;
 
 const Title = styled.h1`
   font-size: 24px;
   color: #339dd8;
   text-align: center;
-`
+`;
 
 const Content = styled.div`
   display: flex;
@@ -72,7 +72,7 @@ const Content = styled.div`
     border-radius: 8px;
     height: 120px;
   }
-`
+`;
 
 const ProgressBarWrapper = styled.div`
   display: flex;
@@ -82,29 +82,29 @@ const ProgressBarWrapper = styled.div`
   h3 {
     color: #33ac96;
   }
-`
+`;
 
 const ProgressBar = styled(LinearProgress)`
   width: 360px;
-`
+`;
 
 export default function RoomSelectionDialog() {
-  const [showCustomRoom, setShowCustomRoom] = useState(false)
-  const [showCreateRoomForm, setShowCreateRoomForm] = useState(false)
-  const [showSnackbar, setShowSnackbar] = useState(false)
-  const lobbyJoined = useAppSelector((state) => state.room.lobbyJoined)
+  const [showCustomRoom, setShowCustomRoom] = useState(false);
+  const [showCreateRoomForm, setShowCreateRoomForm] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const lobbyJoined = useAppSelector((state) => state.room.lobbyJoined);
 
   const handleConnect = () => {
     if (lobbyJoined) {
-      const loadSource = phaserGame.scene.keys.loadSource as LoadSource
+      const loadSource = phaserGame.scene.keys.loadSource as LoadSource;
       loadSource.network
         .joinOrCreatePublic()
         .then(() => loadSource.launchGame())
-        .catch((error) => console.error(error))
+        .catch((error) => console.error(error));
     } else {
-      setShowSnackbar(true)
+      setShowSnackbar(true);
     }
-  }
+  };
 
   return (
     <>
@@ -113,7 +113,7 @@ export default function RoomSelectionDialog() {
         open={showSnackbar}
         autoHideDuration={3000}
         onClose={() => {
-          setShowSnackbar(false)
+          setShowSnackbar(false);
         }}
       >
         <Alert
@@ -141,10 +141,7 @@ export default function RoomSelectionDialog() {
             <CustomRoomWrapper>
               <Title>
                 Private Rooms
-                <Tooltip
-                  title="We update the results in realtime, no refresh needed!"
-                  placement="top"
-                >
+                <Tooltip title="We update the results in realtime, no refresh needed!" placement="top">
                   <IconButton>
                     <HelpOutlineIcon className="tip" />
                   </IconButton>
@@ -156,11 +153,7 @@ export default function RoomSelectionDialog() {
                 </IconButton>
               </BackButtonWrapper>
               <CustomRoomTable />
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => setShowCreateRoomForm(true)}
-              >
+              <Button variant="contained" color="secondary" onClick={() => setShowCreateRoomForm(true)}>
                 Create new room
               </Button>
             </CustomRoomWrapper>
@@ -172,10 +165,7 @@ export default function RoomSelectionDialog() {
                 <Button variant="contained" onClick={handleConnect}>
                   Join to community Server
                 </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => (lobbyJoined ? setShowCustomRoom(true) : setShowSnackbar(true))}
-                >
+                <Button variant="outlined" onClick={() => (lobbyJoined ? setShowCustomRoom(true) : setShowSnackbar(true))}>
                   Create/find server
                 </Button>
               </Content>
@@ -190,5 +180,5 @@ export default function RoomSelectionDialog() {
         )}
       </Backdrop>
     </>
-  )
+  );
 }

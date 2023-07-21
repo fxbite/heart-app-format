@@ -1,7 +1,7 @@
-import Phaser from 'phaser'
-import Game from './scenes/Game'
-import Background from './scenes/Background'
-import LoadSouce from './scenes/LoadSource'
+import Phaser from 'phaser';
+import Game from './scenes/Game';
+import Background from './scenes/Background';
+import LoadSouce from './scenes/LoadSource';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -11,21 +11,21 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.ScaleModes.RESIZE,
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: window.innerHeight
   },
   physics: {
     default: 'arcade',
     arcade: {
       gravity: { y: 0 },
-      debug: false,
-    },
+      debug: false
+    }
   },
   autoFocus: true,
-  scene: [LoadSouce, Background, Game],
-}
+  scene: [LoadSouce, Background, Game]
+};
 
-const phaserGame = new Phaser.Game(config)
+const phaserGame = new Phaser.Game(config);
 
-;(window as any).game = phaserGame
+(window as any).game = phaserGame;
 
-export default phaserGame
+export default phaserGame;

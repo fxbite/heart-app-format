@@ -1,6 +1,6 @@
-import Phaser from 'phaser'
+import Phaser from 'phaser';
 
-export const phaserEvents = new Phaser.Events.EventEmitter()
+export const phaserEvents = new Phaser.Events.EventEmitter();
 
 export enum Event {
   PLAYER_JOINED = 'player-joined',
@@ -13,5 +13,5 @@ export enum Event {
   MY_PLAYER_VIDEO_CONNECTED = 'my-player-video-connected',
   ITEM_USER_ADDED = 'item-user-added',
   ITEM_USER_REMOVED = 'item-user-removed',
-  UPDATE_DIALOG_BUBBLE = 'update-dialog-bubble',
+  UPDATE_DIALOG_BUBBLE = 'update-dialog-bubble'
 }

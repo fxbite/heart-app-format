@@ -1,34 +1,34 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
-import TableContainer from '@mui/material/TableContainer'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import Tooltip from '@mui/material/Tooltip'
-import TextField from '@mui/material/TextField'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import Alert from '@mui/material/Alert'
-import Avatar from '@mui/material/Avatar'
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
-import LockIcon from '@mui/icons-material/Lock'
-import { useAppSelector } from '../hooks'
-import { getAvatarString, getColorByString } from '../util'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import Tooltip from '@mui/material/Tooltip';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Alert from '@mui/material/Alert';
+import Avatar from '@mui/material/Avatar';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import LockIcon from '@mui/icons-material/Lock';
+import { useAppSelector } from '../hooks';
+import { getAvatarString, getColorByString } from '../util';
 
-import phaserGame from '../PhaserGame'
-import LoadSource from '../scenes/LoadSource'
+import phaserGame from '../PhaserGame';
+import LoadSource from '../scenes/LoadSource';
 
 const MessageText = styled.p`
   margin: 10px;
   font-size: 18px;
   color: #eee;
   text-align: center;
-`
+`;
 
 const CustomRoomTableContainer = styled(TableContainer)`
   max-height: 500px;
@@ -36,7 +36,7 @@ const CustomRoomTableContainer = styled(TableContainer)`
   table {
     min-width: 650px;
   }
-`
+`;
 
 const TableRowWrapper = styled(TableRow)`
   &:last-child td,
@@ -69,7 +69,7 @@ const TableRowWrapper = styled(TableRow)`
   .lock-icon {
     font-size: 18px;
   }
-`
+`;
 
 const PasswordDialog = styled(Dialog)`
   .dialog-content {
@@ -81,43 +81,43 @@ const PasswordDialog = styled(Dialog)`
   .MuiDialog-paper {
     background: #222639;
   }
-`
+`;
 
 export const CustomRoomTable = () => {
-  const [password, setPassword] = useState('')
-  const [selectedRoom, setSelectedRoom] = useState('')
-  const [showPasswordDialog, setShowPasswordDialog] = useState(false)
-  const [showPasswordError, setShowPasswordError] = useState(false)
-  const [passwordFieldEmpty, setPasswordFieldEmpty] = useState(false)
-  const lobbyJoined = useAppSelector((state) => state.room.lobbyJoined)
-  const availableRooms = useAppSelector((state) => state.room.availableRooms)
+  const [password, setPassword] = useState('');
+  const [selectedRoom, setSelectedRoom] = useState('');
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
+  const [passwordFieldEmpty, setPasswordFieldEmpty] = useState(false);
+  const lobbyJoined = useAppSelector((state) => state.room.lobbyJoined);
+  const availableRooms = useAppSelector((state) => state.room.availableRooms);
 
   const handleJoinClick = (roomId: string, password: string | null) => {
-    if (!lobbyJoined) return
-    const loadSource = phaserGame.scene.keys.loadSource as LoadSource
+    if (!lobbyJoined) return;
+    const loadSource = phaserGame.scene.keys.loadSource as LoadSource;
     loadSource.network
       .joinCustomById(roomId, password)
       .then(() => loadSource.launchGame())
       .catch((error) => {
-        console.error(error)
-        if (password) setShowPasswordError(true)
-      })
-  }
+        console.error(error);
+        if (password) setShowPasswordError(true);
+      });
+  };
 
   const handlePasswordSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const isValidPassword = password !== ''
+    event.preventDefault();
+    const isValidPassword = password !== '';
 
-    if (isValidPassword === passwordFieldEmpty) setPasswordFieldEmpty(!passwordFieldEmpty)
-    if (isValidPassword) handleJoinClick(selectedRoom, password)
-  }
+    if (isValidPassword === passwordFieldEmpty) setPasswordFieldEmpty(!passwordFieldEmpty);
+    if (isValidPassword) handleJoinClick(selectedRoom, password);
+  };
 
   const resetPasswordDialog = () => {
-    setShowPasswordDialog(false)
-    setPassword('')
-    setPasswordFieldEmpty(false)
-    setShowPasswordError(false)
-  }
+    setShowPasswordDialog(false);
+    setPassword('');
+    setPasswordFieldEmpty(false);
+    setShowPasswordError(false);
+  };
 
   return availableRooms.length === 0 ? (
     <MessageText>There are no custom rooms now, create one or join the public lobby.</MessageText>
@@ -139,8 +139,8 @@ export const CustomRoomTable = () => {
           </TableHead>
           <TableBody>
             {availableRooms.map((room) => {
-              const { roomId, metadata, clients } = room
-              const { name, description, hasPassword } = metadata
+              const { roomId, metadata, clients } = room;
+              const { name, description, hasPassword } = metadata;
               return (
                 <TableRowWrapper key={roomId}>
                   <TableCell>
@@ -163,10 +163,10 @@ export const CustomRoomTable = () => {
                         color="secondary"
                         onClick={() => {
                           if (hasPassword) {
-                            setShowPasswordDialog(true)
-                            setSelectedRoom(roomId)
+                            setShowPasswordDialog(true);
+                            setSelectedRoom(roomId);
                           } else {
-                            handleJoinClick(roomId, null)
+                            handleJoinClick(roomId, null);
                           }
                         }}
                       >
@@ -178,7 +178,7 @@ export const CustomRoomTable = () => {
                     </Tooltip>
                   </TableCell>
                 </TableRowWrapper>
-              )
+              );
             })}
           </TableBody>
         </Table>
@@ -198,7 +198,7 @@ export const CustomRoomTable = () => {
               variant="outlined"
               color="secondary"
               onInput={(e) => {
-                setPassword((e.target as HTMLInputElement).value)
+                setPassword((e.target as HTMLInputElement).value);
               }}
             />
             {showPasswordError && (
@@ -218,5 +218,5 @@ export const CustomRoomTable = () => {
         </form>
       </PasswordDialog>
     </>
-  )
-}
+  );
+};
