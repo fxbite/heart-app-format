@@ -94,7 +94,7 @@ export default class OtherPlayer extends Player {
 
     this.lastUpdateTimestamp = t;
     this.setDepth(this.y); // change player.depth based on player.y
-    const animParts = this.anims.currentAnim.key.split('_');
+    const animParts = this.anims.currentAnim!.key.split('_');
     const animState = animParts[1];
     if (animState === 'sit') {
       const animDir = animParts[2];
@@ -132,7 +132,7 @@ export default class OtherPlayer extends Player {
 
     // update character velocity
     this.setVelocity(vx, vy);
-    this.body.velocity.setLength(speed);
+    this.body?.velocity.setLength(speed);
     // also update playerNameContainer velocity
     this.playContainerBody.setVelocity(vx, vy);
     this.playContainerBody.velocity.setLength(speed);
@@ -140,7 +140,7 @@ export default class OtherPlayer extends Player {
     // while currently connected with myPlayer
     // if myPlayer and the otherPlayer stop overlapping, delete video stream
     this.connectionBufferTime += dt;
-    if (this.connected && !this.body.embedded && this.body.touching.none && this.connectionBufferTime >= 750) {
+    if (this.connected && !this.body?.embedded && this.body?.touching.none && this.connectionBufferTime >= 750) {
       if (this.x < 750 && this.y > 625 && this.myPlayer!.x < 750 && this.myPlayer!.y > 625) return;
       phaserEvents.emit(Event.PLAYER_DISCONNECTED, this.playerId);
       this.connectionBufferTime = 0;
@@ -169,7 +169,7 @@ Phaser.GameObjects.GameObjectFactory.register(
 
     const collisionScale = [6, 4];
     sprite.body
-      .setSize(sprite.width * collisionScale[0], sprite.height * collisionScale[1])
+      ?.setSize(sprite.width * collisionScale[0], sprite.height * collisionScale[1])
       .setOffset(sprite.width * (1 - collisionScale[0]) * 0.5, sprite.height * (1 - collisionScale[1]) * 0.5 + 17);
 
     return sprite;

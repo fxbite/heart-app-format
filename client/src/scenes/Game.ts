@@ -47,32 +47,32 @@ export default class Game extends Phaser.Scene {
 
   registerKeys() {
     this.cursors = {
-      ...this.input.keyboard.createCursorKeys(),
-      ...(this.input.keyboard.addKeys('W,S,A,D') as Keyboard)
+      ...this.input.keyboard!.createCursorKeys(),
+      ...(this.input.keyboard!.addKeys('W,S,A,D') as Keyboard)
     };
     // maybe we can have a dedicated method for adding keys if more keys are needed in the future
-    this.keyW = this.input.keyboard.addKey('W');
-    this.keyA = this.input.keyboard.addKey('A');
-    this.keyD = this.input.keyboard.addKey('D');
-    this.keyS = this.input.keyboard.addKey('S');
-    this.keyE = this.input.keyboard.addKey('E');
-    this.keyF = this.input.keyboard.addKey('F');
-    this.input.keyboard.disableGlobalCapture();
-    this.input.keyboard.on('keydown-ENTER', (event) => {
+    this.keyW = this.input.keyboard!.addKey('W');
+    this.keyA = this.input.keyboard!.addKey('A');
+    this.keyD = this.input.keyboard!.addKey('D');
+    this.keyS = this.input.keyboard!.addKey('S');
+    this.keyE = this.input.keyboard!.addKey('E');
+    this.keyF = this.input.keyboard!.addKey('F');
+    this.input.keyboard?.disableGlobalCapture();
+    this.input.keyboard?.on('keydown-ENTER', (event) => {
       store.dispatch(setShowChat(true));
       store.dispatch(setFocused(true));
     });
-    this.input.keyboard.on('keydown-ESC', (event) => {
+    this.input.keyboard?.on('keydown-ESC', (event) => {
       store.dispatch(setShowChat(false));
     });
   }
 
   disableKeys() {
-    this.input.keyboard.enabled = false;
+    this.input.keyboard!.enabled = false;
   }
 
   enableKeys() {
-    this.input.keyboard.enabled = true;
+    this.input.keyboard!.enabled = true;
   }
 
   create(data: { network: Network }) {
@@ -90,18 +90,18 @@ export default class Game extends Phaser.Scene {
     this.map = this.make.tilemap({ key: 'tilemap' });
     const tilekey = this.map.addTilesetImage('tileset', 'tiles');
 
-    const groundLayer = this.map.createLayer('Ground', tilekey);
-    groundLayer.setScale(2);
-    groundLayer.setCollisionByProperty({ collides: true });
+    const groundLayer = this.map.createLayer('Ground', tilekey!);
+    groundLayer?.setScale(2);
+    groundLayer?.setCollisionByProperty({ collides: true });
 
-    const Underground = this.map.createLayer('Underground', tilekey);
-    Underground.setScale(2);
+    const Underground = this.map.createLayer('Underground', tilekey!);
+    Underground?.setScale(2);
 
-    const floor = this.map.createLayer('Upfloor', tilekey);
-    floor.setScale(2);
+    const floor = this.map.createLayer('Upfloor', tilekey!);
+    floor?.setScale(2);
 
-    const Gardecor = this.map.createLayer('Gardecor', tilekey);
-    Gardecor.setScale(2);
+    const Gardecor = this.map.createLayer('Gardecor', tilekey!);
+    Gardecor?.setScale(2);
 
     this.myPlayer = this.add.myPlayer(545, 495, this.charMale, this.network.mySessionId);
     this.playerSelector = new PlayerSelector(this, 0, 0, 16, 16);
@@ -109,7 +109,7 @@ export default class Game extends Phaser.Scene {
     // import chair objects from Tiled map to Phaser
     const chairs = this.physics.add.staticGroup({ classType: Chair });
     const chairLayer = this.map.getObjectLayer('Chair');
-    chairLayer.objects.forEach((chairObj) => {
+    chairLayer?.objects.forEach((chairObj) => {
       const item = this.addObjectFromTiled(chairs, chairObj, 'chairs', 'chair') as Chair;
       // custom properties[0] is the object direction specified in Tiled
       item.itemDirection = chairObj.properties[0].value;
@@ -118,7 +118,7 @@ export default class Game extends Phaser.Scene {
     // import computers objects from Tiled map to Phaser
     const computers = this.physics.add.staticGroup({ classType: Computer });
     const computerLayer = this.map.getObjectLayer('Computer');
-    computerLayer.objects.forEach((obj, i) => {
+    computerLayer?.objects.forEach((obj, i) => {
       const item = this.addObjectFromTiled(computers, obj, 'computers', 'computer') as Computer;
       item.setDepth(item.y + item.height * 1.65);
       const id = `${i}`;
@@ -137,7 +137,7 @@ export default class Game extends Phaser.Scene {
     this.cameras.main.zoom = 1.4;
     this.cameras.main.startFollow(this.myPlayer, true);
 
-    this.physics.add.collider([this.myPlayer, this.myPlayer.playerContainer], groundLayer);
+    this.physics.add.collider([this.myPlayer, this.myPlayer.playerContainer], groundLayer!);
     this.physics.add.collider([this.myPlayer, this.myPlayer.playerContainer], chairs);
 
     this.physics.add.overlap(this.playerSelector, [chairs, computers], this.handleItemSelectorOverlap, undefined, this);
@@ -154,10 +154,7 @@ export default class Game extends Phaser.Scene {
     this.network.onChatMessageAdded(this.handleChatMessageAdded, this);
 
     // add snow drop to the gamescene
-    const snowDrop = this.add.particles('snow-drop');
-    snowDrop.createEmitter({
-      x: 0,
-      y: 0,
+    const snowDrop = this.add.particles(0, 0, 'snow-drop', {
       // emitZone
       emitZone: {
         source: new Phaser.Geom.Rectangle(-720 * 3, -250, 1280 * 8, 100),
@@ -175,6 +172,7 @@ export default class Game extends Phaser.Scene {
       frequency: 10,
       blendMode: 'ADD'
     });
+    snowDrop.createEmitter();
   }
 
   private handleItemSelectorOverlap(playerSelector, selectionItem) {
@@ -198,7 +196,7 @@ export default class Game extends Phaser.Scene {
     const actualX = (object.x! + object.width! * 0.5) * 2;
     const actualY = (object.y! - object.height! * 0.5) * 2;
     const obj = group
-      .get(actualX, actualY, key, object.gid! - this.map.getTileset(tilesetName).firstgid)
+      .get(actualX, actualY, key, object.gid! - this.map.getTileset(tilesetName)!.firstgid)
       .setDepth(actualY)
       .setScale(2);
     return obj;
@@ -207,11 +205,11 @@ export default class Game extends Phaser.Scene {
   private addGroupFromTiled(objectLayerName: string, key: string, tilesetName: string, collidable: boolean) {
     const group = this.physics.add.staticGroup();
     const objectLayer = this.map.getObjectLayer(objectLayerName);
-    objectLayer.objects.forEach((object) => {
+    objectLayer?.objects.forEach((object) => {
       const actualX = (object.x! + object.width! * 0.5) * 2;
       const actualY = (object.y! - object.height! * 0.5) * 2;
       group
-        .get(actualX, actualY, key, object.gid! - this.map.getTileset(tilesetName).firstgid)
+        .get(actualX, actualY, key, object.gid! - this.map.getTileset(tilesetName)!.firstgid)
         .setDepth(actualY)
         .setScale(2);
     });
