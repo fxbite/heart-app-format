@@ -172,7 +172,7 @@ export default class Game extends Phaser.Scene {
       frequency: 10,
       blendMode: 'ADD'
     });
-    snowDrop.createEmitter();
+    snowDrop.createEmitter()
   }
 
   private handleItemSelectorOverlap(playerSelector, selectionItem) {
