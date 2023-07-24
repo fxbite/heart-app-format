@@ -19,7 +19,7 @@ export default class Network {
   mySessionId!: string;
 
   constructor() {
-    const endpoint = process.env.API_URL!;
+    const endpoint = `wss://${window.location.hostname}/api`;
     this.client = new Client(endpoint);
     this.joinLobbyRoom().then(() => {
       store.dispatch(setLobbyJoined(true));
